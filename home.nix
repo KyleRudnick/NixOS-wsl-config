@@ -109,12 +109,22 @@ in {
   sops = {
     # Path to your private key
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    
     # Path to your encrypted secrets file
     defaultSopsFile = ./secrets.yaml;
-    
     # Define the secret you want to manage
     secrets.OPENROUTER_API_KEY = { };
+    secrets."github_token" = {};
+    secrets."github_access_key" = {};
+  }; 
+
+  programs.ssh = {
+    enable = true;
+    matchBlocks."github.com" = {
+      # Point this to the system sops-nix path
+      identityFile = config.sops.secrets."github_access_key".path;
+      # Optional: Add your username to save you from typing git@github.com
+      user = "git";
+    };
   };
 
   home = {

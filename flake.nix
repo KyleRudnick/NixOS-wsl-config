@@ -32,7 +32,6 @@
 
         overlays = [
           nur.overlays.default
-          jeezyvim.overlays.default
 
           (_final: prev: {
             unstable = import nixpkgs-unstable {
@@ -85,6 +84,7 @@
         modules = [
           nixos-wsl.nixosModules.wsl
           ./wsl.nix
+          sops-nix.nixosModules.sops
         ];
       };
     };
