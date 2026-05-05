@@ -1,0 +1,5 @@
+require("config.settings")
+require("config.autocmd")
+require("core.lazy")
+require("core.lsp")
+require("config.keymap")

@@ -1,25 +1,24 @@
 {
   description = "NixOS configuration";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-  inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-  inputs.home-manager.url = "github:nix-community/home-manager/release-24.11";
-  inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nur.url = "github:nix-community/NUR";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-  inputs.nur.url = "github:nix-community/NUR";
-
-  inputs.nixos-wsl.url = "github:nix-community/NixOS-WSL";
-  inputs.nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
-
-  inputs.nix-index-database.url = "github:Mic92/nix-index-database";
-  inputs.nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-  inputs.jeezyvim.url = "github:LGUG2Z/JeezyVim";
 
   outputs = inputs:
     with inputs; let
-      secrets = builtins.fromJSON (builtins.readFile "${self}/secrets.json");
 
       nixpkgsWithOverlays = system: (import nixpkgs rec {
         inherit system;

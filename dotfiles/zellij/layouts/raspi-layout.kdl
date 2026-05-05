@@ -1,0 +1,15 @@
+layout {
+    pane split_direction="vertical" {
+        pane {
+          command "ssh"
+          args "-i" "/home/kyle/.ssh/raspberry-pi" "-p" "22" "root@192.168.0.215"
+        }
+        pane {
+          cwd "~/.local/mnt/"
+        }
+    }
+    pane size=1 borderless=true {
+        plugin location="zellij:compact-bar"
+    }
+}
+
