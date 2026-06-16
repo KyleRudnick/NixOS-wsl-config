@@ -20,7 +20,9 @@
       autoconf
       automake
 
-
+      # Python packages
+      uv
+      python3
       # Rust toolchain installer
       rustup
 
@@ -113,6 +115,7 @@ in {
     defaultSopsFile = ./secrets.yaml;
     # Define the secret you want to manage
     secrets.OPENROUTER_API_KEY = { };
+    secrets.OPENCODE_ZEN_GO_API_KEY = { };
     secrets."github_token" = {};
     secrets."github_access_key" = {};
   }; 
@@ -136,6 +139,7 @@ in {
       EDITOR = "nvim";
       SHELL = "/etc/profiles/per-user/${username}/bin/fish";
       OPENROUTER_API_KEY = "$(cat ${config.sops.secrets.OPENROUTER_API_KEY.path})";
+      OPENCODE_ZEN_GO_API_KEY = "$(cat ${config.sops.secrets.OPENCODE_ZEN_GO_API_KEY.path})";
     };
   };
 

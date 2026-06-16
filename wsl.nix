@@ -5,6 +5,7 @@
   hostname,
   pkgs,
   inputs,
+  config,
   ...
 }: {
   time.timeZone = "Europe/Berlin";
@@ -12,6 +13,25 @@
   networking.hostName = "${hostname}";
 
   programs.fish.enable = true;
+  programs.fish.interactiveShellInit = ''
+    # Safely load the secrets into environment variables using standard shell paths
+    if test -f "$XDG_RUNTIME_DIR/secrets/OPENROUTER_API_KEY"
+      set -gx OPENROUTER_API_KEY (cat "$XDG_RUNTIME_DIR/secrets/OPENROUTER_API_KEY")
+    end
+
+    if test -f "$XDG_RUNTIME_DIR/secrets/OPENCODE_ZEN_GO_API_KEY"
+      set -gx OPENCODE_ZEN_GO_API_KEY (cat "$XDG_RUNTIME_DIR/secrets/OPENCODE_ZEN_GO_API_KEY")
+    end
+
+    if test -f "$XDG_RUNTIME_DIR/secrets/github_token"
+      set -gx GITHUB_TOKEN (cat "$XDG_RUNTIME_DIR/secrets/github_token")
+    end
+
+    if test -f "$XDG_RUNTIME_DIR/secrets/github_access_key"
+      set -gx GITHUB_ACCESS_KEY (cat "$XDG_RUNTIME_DIR/secrets/github_access_key")
+    end
+  '';
+
   environment.pathsToLink = ["/share/fish"];
   environment.shells = [pkgs.fish];
 
@@ -22,7 +42,7 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  services.openssh.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   users.users.${username} = {
     isNormalUser = true;
@@ -30,6 +50,7 @@
     extraGroups = [
       "wheel"
       "docker"
+      "kvm"
     ];
   };
 
